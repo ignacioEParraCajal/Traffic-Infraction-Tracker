@@ -1,14 +1,17 @@
+from datetime import date
+
+
 class Person:
     def __init__(self, name, email):
         self.name = name
         self.email = email
         self.vehicles = []
 
-    def add_car(self, car):
+    def add_vehicle(self, car):
         self.vehicles.append(car)
 
     def __repr__(self):
-        return f"name={self.name}, email={self.email}, vehicles={self.vehicles}"
+        return f"name={self.name}, email={self.email}"
 
 
 class Vehicle:
@@ -18,21 +21,33 @@ class Vehicle:
         self.infractions = []
         self.number_of_infractions = 0
         self.owner = owner
-        owner.add_car(self)
+        owner.add_vehicle(self)
 
     def __repr__(self):
         return f"(patent={self.patent}, color={self.color}, number_of_infractions={self.number_of_infractions})"
 
+    def add_infraction(self, new_infraction):
+        self.infractions.append(new_infraction)
+        self.number_of_infractions += 1
 
-class Offical:
+
+class Official:
     def __init__(self, name, identity_id):
         self.name = name
         self.identity_id = identity_id
 
+    def assign_infraction(self, vehicle, comments):
+        new_infraction = Infraction(comments, vehicle.patent, self.identity_id)
+        vehicle.add_infraction(new_infraction)
+
 
 class Infraction:
-    def __init__(self, date, comments, patent_car, official_id):
-        self.date = date
+    def __init__(self, comments, patent, official_id):
+        self.date = date.today()
         self.comments = comments
-        self.patent_car = patent_car
+        self.patent_car = patent
         self.official_id = official_id
+        self.amount_to_pay = 0
+
+    def __repr__(self):
+        return f"'{self.comments}'"
