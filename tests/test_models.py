@@ -1,39 +1,32 @@
 import pytest
-from src.models import (
-    Person,
-    Vehicle,
-    Official,
-    Infraction
-)
+from src.models import Person, Vehicle, Official, Infraction
+from datetime import date
+from src.models import Infraction
 
 
-def test_create_person():
-    """ tests una persona con un vehiculo"""
-    name = "pedro picapiedra"
-    email = "pedritoP@gmail.com"
-    pedro = Person(name, email)
+@pytest.fixture
+def pedro():
+    return Person(name="pedro picapiedra", email="pedritoP@gmail.com")
 
-    toyota_corolla = Vehicle(1234, "negro", pedro)
 
+@pytest.fixture
+def toyota_corolla(pedro):
+    return Vehicle(patent=1234, color="negro", owner=pedro)
+
+
+@pytest.fixture
+def oficial_perez():
+    return Official(name="perez", identity_id=1)
+
+
+def test_create_person(pedro, toyota_corolla):
     assert toyota_corolla.owner == pedro
     assert pedro.vehicles == [toyota_corolla]
-    assert pedro.email == email
+    assert pedro.email == "pedritoP@gmail.com"
 
 
-def test_add_infraction_to_vehicle():
-    """ tests una persona con un vechicul con una infraccion"""
-    name = "pedro picapiedra"
-    email = "pedritoP@gmail.com"
-    pedro = Person(name, email)
-
-    toyota_corolla = Vehicle(1234, "negro", pedro)
-    oficial_perez = Official("perez", 1)
-
+def test_add_infraction_to_vehicle(pedro, toyota_corolla, oficial_perez):
     oficial_perez.assign_infraction(toyota_corolla, "mal estacionado")
 
     assert toyota_corolla.number_of_infractions == 1
-    assert toyota_corolla.infractions == [toyota_corolla.infractions[0]]
-
-
-if __name__ == "__main__":
-    pytest.main()
+    assert toyota_corolla.infractions[0].comments == "mal estacionado"
