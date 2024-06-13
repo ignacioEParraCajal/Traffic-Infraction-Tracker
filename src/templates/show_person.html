@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Show Persons{% endblock %}
+
+{% block content %}
+    <h2>Personas</h2>
+    <ul>
+        {% for person in persons %}
+            <li>{{ person.name }} -- {{ person.email }} -- Infracciones: {{ person.count_infraccions()}}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
