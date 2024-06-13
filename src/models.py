@@ -1,5 +1,5 @@
 from datetime import date
-from . import db
+from .app import db
 
 
 class Person(db.Model):
@@ -14,6 +14,12 @@ class Person(db.Model):
 
     def add_vehicle(self, car):
         self.vehicles.append(car)
+
+    def count_infraccions(self):
+        infracctions = 0
+        for vehicle in self.vehicles:
+            infracctions += vehicle.number_of_infractions
+        return infracctions
 
     def __repr__(self):
         return f"name={self.name}, email={self.email}"
