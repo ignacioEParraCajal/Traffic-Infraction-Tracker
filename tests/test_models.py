@@ -1,7 +1,9 @@
 import pytest
-from src.models import Person, Vehicle, Official, Infraction
-from datetime import date
-from src.models import Infraction
+from src.models import (
+    Person,
+    Vehicle,
+    Official
+)
 
 
 @pytest.fixture
